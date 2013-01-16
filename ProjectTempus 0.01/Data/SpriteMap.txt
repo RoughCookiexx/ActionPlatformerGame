@@ -1,0 +1,7 @@
+images/RunningMan.png
+PLAYER
+2
+90
+100
+1,10
+16
