@@ -20,8 +20,6 @@ struct SpriteSheetData{
 // It also ties graphics together with physics.
 class AnimatedSprite : public sf::Sprite
 {
-
-public :
 	
 
 private:
@@ -32,7 +30,7 @@ private:
 	b2Fixture* footSensor;
 	int numFootContacts;
 	Facing facing;
-
+	int health;
 	
 	void nextFrame();
 

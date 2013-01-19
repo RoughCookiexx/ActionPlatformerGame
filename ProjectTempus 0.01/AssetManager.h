@@ -14,6 +14,7 @@ private:
 	Projectile* timeBullet;
 	World* world;
 
+
 public:
 	static AssetManager *assetManager;
 	AssetManager();

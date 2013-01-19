@@ -64,7 +64,7 @@ b2Body* Physics::createRectBody(b2World* world, float x, float y, float w, float
 			b2FixtureDef *fixtureDef = new b2FixtureDef();
 			fixtureDef->density = 1.0f;
 			fixtureDef->shape = shape;
-			fixtureDef->friction = 0.2;
+			fixtureDef->friction = 0.1;
 
 			body->CreateFixture(fixtureDef);
 

@@ -31,6 +31,9 @@
     <Filter Include="Dynamic Bodies">
       <UniqueIdentifier>{594a8619-b37f-422a-9eb3-29198f57de05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{c78c7381-f158-4237-97ec-53efdb8a8181}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -96,6 +99,15 @@
     <ClInclude Include="CHRTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BackgroundTexture.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="Bot.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="TestBot.h">
+      <Filter>AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -139,6 +151,15 @@
     </ClCompile>
     <ClCompile Include="AssetManager.cpp">
       <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="BackgroundTexture.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="Bot.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="TestBot.cpp">
+      <Filter>AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

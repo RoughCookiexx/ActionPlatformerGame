@@ -17,6 +17,7 @@ private:
 	vector<AnimatedSprite*> neutralSprites;
 	AnimatedSprite *player;
 	void createTimeBullet(b2World *world);
+	void createTestBot(b2World *world);
 	void updateSprites();
 
 public:

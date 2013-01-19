@@ -1,7 +1,7 @@
 #include "Graphics.h"
 #include "AssetManager.h"
 
-#define CAMERA_LIMIT_L 300
+#define CAMERA_LIMIT_L 400
 #define CAMERA_LIMIT_R 500
 #define CAMERA_LIMIT_T 200
 #define CAMERA_LIMIT_B 400
@@ -44,18 +44,12 @@ void Graphics::update(World *world)
 	window->clear(sf::Color(100,100,100));
 
 		// DRAW EVERYTHING:
-		//tiledLayer->draw(window);
+		world->drawWorld(window);
 		spriteManager->drawSprites(window);
-		
 		// DISPLAY THE FRAME: 
 
 
-		// *****************
-	// Right now I'm using debug draw to draw everything. 
-		// *****************
-
-	followPlayer(world);
-
+		followPlayer(world);
 		window->display();
 
 		//window->clear();

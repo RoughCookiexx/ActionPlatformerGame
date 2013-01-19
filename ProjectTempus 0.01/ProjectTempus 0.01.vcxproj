@@ -84,6 +84,8 @@
   <ItemGroup>
     <ClInclude Include="AnimatedSprite.h" />
     <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="BackgroundTexture.h" />
+    <ClInclude Include="Bot.h" />
     <ClInclude Include="CHRTimer.h" />
     <ClInclude Include="ContactListener.h" />
     <ClInclude Include="DebugDraw.h" />
@@ -98,12 +100,15 @@
     <ClInclude Include="SpriteManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TestBot.h" />
     <ClInclude Include="Tokenizer.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="BackgroundTexture.cpp" />
+    <ClCompile Include="Bot.cpp" />
     <ClCompile Include="ContactListener.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -117,6 +122,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TestBot.cpp" />
     <ClCompile Include="Tokenizer.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>

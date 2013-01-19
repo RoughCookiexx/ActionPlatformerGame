@@ -5,6 +5,8 @@
 #include "SFML\System.hpp"
 #include "AssetManager.h"
 #include "World.h"
+#include "TestBot.h"
+#include "Bot.h"
 
 
 SpriteManager::SpriteManager()
@@ -19,8 +21,36 @@ void SpriteManager::init(b2World *world)
 
 	createTimeBullet(world);
 	groundBody = Physics::createRectBody(world, 0, 600, 30000, 100, false);
+
+	//createTestBot(world);
 }
 
+void SpriteManager::createTestBot(b2World *world)
+{
+	
+	int framesInAction[] = {1};
+
+	SpriteSheetData data;
+	data.drawHeight = 50;
+	data.drawWidth = 50;
+	data.framesInAction = framesInAction;
+	data.numOfActions = 1;
+	data.timeBetweenFrames = 1;
+	data.type = BADGUY;
+	
+			sf::Texture *texture = new sf::Texture();
+			texture->loadFromFile("images/TestBot.png");
+
+			b2Body *body = Physics::createRectBody(world, 10, 0, 50, 50, true);
+				body->SetFixedRotation(true);
+
+	AnimatedSprite *sprite = new AnimatedSprite(data, *texture, body);
+	TestBot *testBot = new TestBot(sprite);
+
+	addSprite(sprite);
+}
+
+// This will be gone soon.
 void SpriteManager::createTimeBullet(b2World *world)
 {
 	b2Vec2 *offset = new b2Vec2(0,0);
@@ -28,12 +58,12 @@ void SpriteManager::createTimeBullet(b2World *world)
 			data->numOfActions = 1;
 			data->framesInAction = new int[1];
 			data->framesInAction[0] = 10;
-			data->drawHeight = 50;
-			data->drawWidth = 50;
+			data->drawHeight = 15;
+			data->drawWidth = 15;
 			data->type = NEUTRAL;
 			data->timeBetweenFrames = 1/16;
 
-	b2Body *body = Physics::createRectBody(world, 200, 200, 50, 50, true);
+	b2Body *body = Physics::createRectBody(world, 200, 200, 15, 15, true);
 	sf::Texture *texture = new sf::Texture();
 	texture->loadFromFile("images/testimage.png");
 
@@ -67,10 +97,16 @@ void SpriteManager::addSpritesFromFile(string fileString, b2World *world)
 			string spriteType = "";
 			getline(spriteSheetFile, spriteType);
 
-				// Next is the number of actions:
-			string numOfActionsStr = "";
-			getline(spriteSheetFile, numOfActionsStr);
-			int numOfActions = stoi(numOfActionsStr);
+				// x position:
+			string xStr;
+			getline(spriteSheetFile, xStr);
+			int x = stoi(xStr);
+
+				// x position:
+			string yStr;
+			getline(spriteSheetFile, yStr);
+			int y = stoi(yStr);
+
 
 				// Then Width:
 			string widthStr; 
@@ -82,6 +118,11 @@ void SpriteManager::addSpritesFromFile(string fileString, b2World *world)
 			getline(spriteSheetFile, heightStr);
 			int height = stoi(heightStr);
 
+				// Next is the number of actions:
+			string numOfActionsStr = "";
+			getline(spriteSheetFile, numOfActionsStr);
+			int numOfActions = stoi(numOfActionsStr);
+			
 				// Then a number of integers each representing number of frames per action:
 			string numOfFramesStr;
 			getline(spriteSheetFile, numOfFramesStr);
@@ -107,26 +148,30 @@ void SpriteManager::addSpritesFromFile(string fileString, b2World *world)
 			//	printf("");
 
 				// Create sprite sheet data:
-			SpriteSheetData spriteSheetData;
-			spriteSheetData.numOfActions = numOfActions;
-			spriteSheetData.framesInAction = numOfFrames;
-			spriteSheetData.drawWidth = width;
-			spriteSheetData.drawHeight = height;
-			spriteSheetData.timeBetweenFrames = (1.0/fps);
+			SpriteSheetData *spriteSheetData = new SpriteSheetData();
+			spriteSheetData->numOfActions = numOfActions;
+			spriteSheetData->framesInAction = numOfFrames;
+			spriteSheetData->drawWidth = width;
+			spriteSheetData->drawHeight = height;
+			spriteSheetData->timeBetweenFrames = (1.0/fps);
+			
+			if(spriteType == "BADGUY")
+			{
+				spriteSheetData->type = BADGUY;
+			}
 
 				// Make a physics body:
-			b2Body *body = Physics::createRectBody(world, 300, 0, width, height, true);
+			b2Body *body = Physics::createRectBody(world, x, y, width, height, true);
 
 				// Create Sprite and apply texture:
-			AnimatedSprite *sprite = new AnimatedSprite(spriteSheetData, *texture, body);		
+			AnimatedSprite *sprite = new AnimatedSprite(*spriteSheetData, *texture, body);		
 
-
+			
+				body->SetFixedRotation(true);
 				// This is where we retrieve the player sprite for the asset manager:
 			if(spriteType == "PLAYER")
 			{
-				player = sprite; 
-				body->SetFixedRotation(true);
-				//body->SetGravityScale(0);
+				player = sprite;
 
 				// This is used to see if the player is touching the ground to see if they can jump
 				player->setFootSensor(Physics::addRectFixture(body, 2, 2,
@@ -138,6 +183,7 @@ void SpriteManager::addSpritesFromFile(string fileString, b2World *world)
 
 				AssetManager::getAssetManager()->setPlayer(player);
 			}
+
 
 				// Add the Sprite:
 			addSprite(sprite);
@@ -156,24 +202,36 @@ void SpriteManager::addSprite(AnimatedSprite* sprite)
 		player = sprite;
 	else if(sprite->spriteSheetData.type == NEUTRAL)
 		neutralSprites.push_back(sprite);
+	else if(sprite->spriteSheetData.type == BADGUY)
+	{
+		badguySprites.push_back(sprite);
+		Bot *bot = new TestBot(sprite);
+		World *world = AssetManager::getAssetManager()->getWorld();
+			world->addBot(bot);
+	}
 }
 
 
 void SpriteManager::drawSprites(sf::RenderWindow *window)
 {
 
-	player->update();
-	window->draw( ((sf::Sprite)(*(player))) ); 
-	float xPos = groundBody->GetPosition().x;
-	float yPos = groundBody->GetPosition().y;
-	float xPos1 = player->getBody()->GetPosition().x;
-	float yPos1 = player->getBody()->GetPosition().y;
-
+	// Draw all of the neutralSprites:
 	for(unsigned int i=0; i < neutralSprites.size(); i++)
 	{
 			neutralSprites.at(i)->update();
-			window->draw( ((sf::Sprite)(*(neutralSprites.at(0)))) );
+			window->draw( ((sf::Sprite)(*(neutralSprites.at(i)))) );
 	}
+
+	// Draw all of the bad guys:
+	for(unsigned int i=0; i < badguySprites.size(); i++)
+	{
+			badguySprites.at(i)->update(); // Update the sprite graphics
+			window->draw( ((sf::Sprite)(*(badguySprites.at(i)))) );
+	}
+
+	// Draw the player:
+	player->update();
+	window->draw( ((sf::Sprite)(*(player))) ); 
 
 
 }

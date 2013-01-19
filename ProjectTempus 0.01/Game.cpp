@@ -16,8 +16,8 @@ Game::Game()
 
 void Game::init()
 {
-	graphics = new Graphics();
 	world = new World();
+	graphics = new Graphics();
 	physics = new Physics();
 	input = new InputHandler();
 
