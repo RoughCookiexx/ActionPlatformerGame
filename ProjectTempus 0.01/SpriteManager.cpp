@@ -1,13 +1,13 @@
 #include "SpriteManager.h"
 #include <iostream>
-#include <fstream>
+#include <sstream>
 #include "Game.h"
 #include "SFML\System.hpp"
 #include "AssetManager.h"
 #include "World.h"
 #include "TestBot.h"
 #include "Bot.h"
-
+#include "DataLoader.h"
 
 SpriteManager::SpriteManager()
 {
@@ -22,32 +22,6 @@ void SpriteManager::init(b2World *world)
 	createTimeBullet(world);
 	groundBody = Physics::createRectBody(world, 0, 600, 30000, 100, false);
 
-	//createTestBot(world);
-}
-
-void SpriteManager::createTestBot(b2World *world)
-{
-	
-	int framesInAction[] = {1};
-
-	SpriteSheetData data;
-	data.drawHeight = 50;
-	data.drawWidth = 50;
-	data.framesInAction = framesInAction;
-	data.numOfActions = 1;
-	data.timeBetweenFrames = 1;
-	data.type = BADGUY;
-	
-			sf::Texture *texture = new sf::Texture();
-			texture->loadFromFile("images/TestBot.png");
-
-			b2Body *body = Physics::createRectBody(world, 10, 0, 50, 50, true);
-				body->SetFixedRotation(true);
-
-	AnimatedSprite *sprite = new AnimatedSprite(data, *texture, body);
-	TestBot *testBot = new TestBot(sprite);
-
-	addSprite(sprite);
 }
 
 // This will be gone soon.
@@ -79,10 +53,72 @@ void SpriteManager::createTimeBullet(b2World *world)
 
 }
 
-//	THIS IS LONG AND UGLY. READ THROUGH THIS AND SEE IF THERE'S A BETTER WAY. 
-// should be in a separate "FileLoader" class I think.
+// Adds sprites from a file. derr
 void SpriteManager::addSpritesFromFile(string fileString, b2World *world)
 {
+	std::vector<ItemInfo*> spriteInfoList;
+	spriteInfoList = DataLoader::MapFileInfo(fileString);
+	for(int i = 0; i < spriteInfoList.size(); i++)
+	{
+
+		// Get the info from the file:
+		ItemInfo *spriteInfo = spriteInfoList.at(i);
+			string textureStr = spriteInfo->sMap["Texture"];
+			string typeStr = spriteInfo->sMap["Type"];
+			int height = spriteInfo->iMap["Height"];
+			int width = spriteInfo->iMap["Width"];
+			int x = spriteInfo->iMap["X"];
+			int y = spriteInfo->iMap["Y"];
+			float fps = (1.0/spriteInfo->iMap["FPS"]);
+			int numActions = spriteInfo->iMap["NumActions"];
+
+		// Set up the sprite sheet data with the info taken from the file:
+		SpriteSheetData *ssData = new SpriteSheetData();
+			ssData->drawHeight = height;
+			ssData->drawWidth = width;
+			ssData->numOfActions = numActions;
+			ssData->timeBetweenFrames = fps;
+
+		// This loop adds the number of frames in each action to the SpriteSheet data:
+			ssData->framesInAction = new int[numActions];
+		for(int i = 0; i < numActions; i++)
+		{
+			std::stringstream ss;
+			string framesStr = "FramesAction";
+			ss << (i+1);
+			framesStr += ss.str();
+			ssData->framesInAction[i] = spriteInfo->iMap[framesStr];
+		}
+
+		// Now set the sprite type:
+		if(typeStr == "PLAYER")	{ ssData->type = PLAYER; }
+			else if (typeStr == "BADGUY") { ssData->type = BADGUY; }
+			else if (typeStr == "NEUTRAL") { ssData->type = NEUTRAL; }
+			else if (typeStr == "GOOD_BULLET") { ssData->type = GOOD_BULLET; }
+			else if (typeStr == "BAD_BULLET") { ssData->type = BAD_BULLET; }
+
+		// Make a physics body:
+		b2Body *body = Physics::createRectBody(world, x, y, width, height, true);
+				body->SetFixedRotation(true);
+		
+		// Load Texture file:
+		sf::Texture *texture = new sf::Texture();
+		texture->loadFromFile(textureStr);
+		
+		// Create Sprite and apply texture:
+		AnimatedSprite *sprite = new AnimatedSprite(*ssData, *texture, body);	
+
+		// This is used to see if the player is touching the ground to see if they can jump
+	/*	sprite->setFootSensor(Physics::addRectFixture(body, 2, 2,
+					body->GetPosition().x + width/2, 
+					body->GetPosition().y + height+1));
+				sprite->getFootSensor()->SetUserData((void*)3); */
+		
+		// Add the Sprite:
+		addSprite(sprite);
+	}
+
+	/*
 	ifstream spriteSheetFile;
 	spriteSheetFile.open(fileString);
 
@@ -144,8 +180,6 @@ void SpriteManager::addSpritesFromFile(string fileString, b2World *world)
 				// Load Texture file:
 			sf::Texture *texture = new sf::Texture();
 			texture->loadFromFile(SSFileName);
-			//if(!texture->create(width, height))
-			//	printf("");
 
 				// Create sprite sheet data:
 			SpriteSheetData *spriteSheetData = new SpriteSheetData();
@@ -192,14 +226,27 @@ void SpriteManager::addSpritesFromFile(string fileString, b2World *world)
 		}
 	}
 	spriteSheetFile.close();
+	*/
 	
 }
+
+
 
 
 void SpriteManager::addSprite(AnimatedSprite* sprite)
 {
 	if(sprite->spriteSheetData.type == PLAYER)
+	{
 		player = sprite;
+		AssetManager::getAssetManager()->setPlayer(player); // hackity hack.
+		b2Body *body = player->getBody();
+		float width = player->getTextureRect().width;
+		float height = player->getTextureRect().height;
+				player->setFootSensor(Physics::addRectFixture(body, 2, 2,
+					body->GetPosition().x + width/2, 
+					body->GetPosition().y + height+1));
+				player->getFootSensor()->SetUserData((void*)3);
+	}
 	else if(sprite->spriteSheetData.type == NEUTRAL)
 		neutralSprites.push_back(sprite);
 	else if(sprite->spriteSheetData.type == BADGUY)

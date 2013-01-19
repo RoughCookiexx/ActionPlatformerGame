@@ -4,7 +4,7 @@
 #include <Box2D\Box2D.h>
 #include "CHRTimer.h"
 
-enum SpriteType { PLAYER, BADGUY, NEUTRAL, BULLET };
+enum SpriteType { PLAYER, BADGUY, NEUTRAL, GOOD_BULLET, BAD_BULLET };
 enum Facing { LEFT, RIGHT };
 
 // Some data necessary to work with a sprite sheet:

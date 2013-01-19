@@ -34,6 +34,9 @@
     <Filter Include="AI">
       <UniqueIdentifier>{c78c7381-f158-4237-97ec-53efdb8a8181}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DataLoading">
+      <UniqueIdentifier>{49d49d4c-d7b7-4fda-b2fc-46f9a31e9099}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -108,6 +111,9 @@
     <ClInclude Include="TestBot.h">
       <Filter>AI</Filter>
     </ClInclude>
+    <ClInclude Include="DataLoader.h">
+      <Filter>DataLoading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -160,6 +166,9 @@
     </ClCompile>
     <ClCompile Include="TestBot.cpp">
       <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="DataLoader.cpp">
+      <Filter>DataLoading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,29 +1,30 @@
-images/RunningMan.png
-PLAYER
-300
-0
-90
-100
-2
-1,10
-16
+Texture:images/RunningMan.png
+Type:PLAYER
+X: 300
+Y: 0
+Width: 90
+Height: 100
+NumActions: 2
+FramesAction1: 1
+FramesAction2: 10
+FPS: 16
 
-images/tile.png
-BADGUY
-400
-0
-50
-50
-1
-1
-16
+Texture:images/tile.png
+Type:BADGUY
+X: 400
+Y: 0
+Width: 50
+Height: 50
+NumActions: 1
+FramesAction1: 1
+FPS: 16
 
-images/tile.png
-BADGUY
-800
-0
-50
-50
-1
-1
-16
+Texture:images/tile.png
+Type:BADGUY
+X: 600
+Y: 0
+Width: 50
+Height: 50
+NumActions: 1
+FramesAction1: 1
+FPS: 16

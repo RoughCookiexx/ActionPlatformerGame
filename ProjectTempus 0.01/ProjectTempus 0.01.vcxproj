@@ -88,6 +88,7 @@
     <ClInclude Include="Bot.h" />
     <ClInclude Include="CHRTimer.h" />
     <ClInclude Include="ContactListener.h" />
+    <ClInclude Include="DataLoader.h" />
     <ClInclude Include="DebugDraw.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Graphics.h" />
@@ -110,6 +111,7 @@
     <ClCompile Include="BackgroundTexture.cpp" />
     <ClCompile Include="Bot.cpp" />
     <ClCompile Include="ContactListener.cpp" />
+    <ClCompile Include="DataLoader.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Graphics.cpp" />

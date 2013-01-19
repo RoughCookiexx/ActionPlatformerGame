@@ -12,7 +12,7 @@
           //check if fixture A was the foot sensor
           void* fixtureUserData = contact->GetFixtureA()->GetUserData();
           if ( (int)fixtureUserData == 3 )
-              numFootContacts++;
+               numFootContacts++;
           //check if fixture B was the foot sensor
           fixtureUserData = contact->GetFixtureB()->GetUserData();
           if ( (int)fixtureUserData == 3 )
