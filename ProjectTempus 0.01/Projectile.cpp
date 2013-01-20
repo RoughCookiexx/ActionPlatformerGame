@@ -19,7 +19,7 @@ Projectile::Projectile(AnimatedSprite *sprite, AnimatedSprite* owner, b2Vec2 off
 	body->SetActive(false);
 	body->SetGravityScale(0);
 	
-	Physics::setFilterData(body, 0x0002, 0x0004, 0x0000);
+	Physics::setFilterData(body, GOOD_BULLET, BADGUY);
 }
 
 bool Projectile::Fire(b2Vec2 targetPoint)

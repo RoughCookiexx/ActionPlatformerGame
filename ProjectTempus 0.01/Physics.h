@@ -20,7 +20,7 @@ class Physics
 		Physics();
 		static b2Body* createRectBody(b2World* world, float x, float y, float w, float h, bool dyn);
 		static b2Fixture* addRectFixture(b2Body* body, float x, float y, float w, float h);
-		static void setFilterData(b2Body* body, int catBits, int maskBits, int groupBits);
+		static void setFilterData(b2Body* body, int catBits, int maskBits);
 
 		void init();
 		void update(World *world);

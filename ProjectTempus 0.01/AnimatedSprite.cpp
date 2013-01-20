@@ -19,10 +19,14 @@ AnimatedSprite::AnimatedSprite(SpriteSheetData data, sf::Texture &texture, b2Bod
 
 	// This is to check if the sprite is touching a ground body. For jumping.
 	numFootContacts = 0;
+	jumpTimer = 0;
 
 	// This is for timing the swapping of frames. 
 	timer = new CHRTimer();
 	timeSinceLastFrame = 0;
+
+	// How much health we start with.
+	health = 100;
 
 	// Texture stuff: 
 	this->setTexture(texture);
@@ -79,4 +83,16 @@ void AnimatedSprite::setAction(int actionNumber)
 	sf::IntRect rect= this->getTextureRect();
 	rect.top = rect.height * actionNumber;
 	this->setTextureRect(rect);
+}
+
+void AnimatedSprite::kill()
+{
+	this->getBody()->SetLinearVelocity(b2Vec2(1000,-100));
+}
+
+void AnimatedSprite::hurt()
+{
+	health -= 20;
+	if(health <= 0)
+		kill();
 }

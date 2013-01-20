@@ -81,12 +81,12 @@ void InputHandler::handleInput(World *world, Graphics *graphics)
 		ContactListener *contactListener = world->getContactListener();
 
 		// this checks to see if your feet are on the ground.
-		if(contactListener->getNumFootContacts() > 0 
+/*		if(contactListener->getNumFootContacts() > 0 
 			&& contactListener->getJumpTimer() == 0)
 		{
 			body->SetLinearVelocity(b2Vec2(velocity.x, velocity.y - JUMP_SPEED));
 			contactListener->startJumpTimer();
-		}
+		}*/
 	}
 
 

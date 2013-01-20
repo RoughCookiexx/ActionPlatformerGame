@@ -30,7 +30,7 @@ void Physics::update(World *world)
 }
 
 
-// This simplifies adding a rectangular body to the world:
+// Add a fixture to an existing body:
 b2Fixture* Physics::addRectFixture(b2Body* body, float x, float y, float w, float h)
 {
 	b2Fixture *fixture;
@@ -48,7 +48,7 @@ b2Fixture* Physics::addRectFixture(b2Body* body, float x, float y, float w, floa
 	 return fixture;
 }
 
-// Add a fixture to an existing body:
+// This simplifies adding a rectangular body to the world:
 b2Body* Physics::createRectBody(b2World* world, float x, float y, float w, float h, bool dyn=false)
 {
 			b2BodyDef *def = new b2BodyDef();
@@ -74,12 +74,12 @@ b2Body* Physics::createRectBody(b2World* world, float x, float y, float w, float
 
 // This will set the filter data for the first fixture in a body.
 // This will need to be changed or I will need something else if I use bodies with multiple fixtures.
-void Physics::setFilterData(b2Body* body, int catBits, int maskBits, int groupBits)
+void Physics::setFilterData(b2Body* body, int catBits, int maskBits)
 {
 	b2Filter *filter = new b2Filter();
 	filter->categoryBits = catBits;
 	filter->maskBits = maskBits;
-	filter->groupIndex = groupBits;
+	//filter->groupIndex = groupBits;
 
 	b2Fixture* fixture = body->GetFixtureList();
 	fixture->SetFilterData(*filter);
